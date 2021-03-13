@@ -1,5 +1,6 @@
 export const actionShopping = {
   ADD: "ADD",
+  CLEAR: "CLEAR",
   FETCH: "FETCH",
 };
 
@@ -16,5 +17,11 @@ export const addShopping = (product) => (dispatch) => {
 export const fetchShopping = () => (dispatch) => {
   return dispatch({
     type: actionShopping.FETCH,
+  });
+};
+
+export const clearShopping = () => (dispatch) => {
+  return dispatch({
+    type: actionShopping.CLEAR,
   });
 };

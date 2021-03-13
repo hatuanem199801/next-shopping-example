@@ -1,18 +1,17 @@
 import jsCookie from "js-cookie";
 
-export default function useCookie(key, value) {
+export function getCookie(key) {
   let result = [];
-
-  if (key && !value) {
+  if (key) {
     const localData = jsCookie.get(key);
     if (localData && localData.length > 0) {
       result = JSON.parse(localData);
     }
   }
-  if (key && value) {
-    console.log("function 2");
-    jsCookie.set(key, JSON.stringify(value));
-  }
 
   return result;
+}
+
+export function setCookie(key, value) {
+  jsCookie.set(key, JSON.stringify(value));
 }

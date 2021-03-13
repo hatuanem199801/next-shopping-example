@@ -1,14 +1,21 @@
-import useCookie from "../../libs/useCookie";
+import { getCookie, setCookie } from "../../libs/useCookie";
 import { actionShopping } from "./action";
 const CARD = "CARD";
 
 const shopInitialState = {
-  shopping: useCookie(CARD),
+  shopping: getCookie(CARD),
 };
+
+function clear() {
+  let shoppings = [];
+  setCookie(CARD, shoppings);
+  return shoppings;
+}
 
 function removeShoppingCart(data) {
   let shoppings = shopInitialState.shopping;
   shoppings.filter((item) => item.product.id !== data.product.id);
+  setCookie(CARD, shoppings);
   return shoppings;
 }
 
@@ -23,6 +30,7 @@ function increment(data) {
       return item;
     });
   }
+  setCookie(CARD, shoppings);
   return shoppings;
 }
 
@@ -37,7 +45,12 @@ function decrement(data) {
       return item;
     });
   }
+  setCookie(CARD, shoppings);
   return shoppings;
+}
+
+function getShopping() {
+  return getCookie(CARD);
 }
 
 function addShoppingCart(data) {
@@ -53,6 +66,7 @@ function addShoppingCart(data) {
   } else {
     shoppings.push(data);
   }
+  setCookie(CARD, shoppings);
   return shoppings;
 }
 
@@ -61,14 +75,20 @@ export default function reducer(state = shopInitialState, action) {
 
   switch (type) {
     case actionShopping.ADD:
-      let shoppings = addShoppingCart(payload);
-      Object.assign({}, state, {
-        shopping: shoppings,
-      });
-      useCookie(CARD, shoppings);
+      state = {
+        shopping: addShoppingCart(payload),
+      };
+      return state;
+    case actionShopping.CLEAR:
+      state = {
+        shopping: clear(),
+      };
+      return state;
     case actionShopping.FETCH:
-      return useCookie(CARD);
     default:
+      state = {
+        shopping: getShopping(),
+      };
       return state;
   }
 }

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchShopping } from "../store/shopping/action";
+import { fetchShopping, clearShopping } from "../store/shopping/action";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const ShoppingCounter = ({ shopping, fetchShopping }) => {
+const ShoppingCounter = ({ shopping, fetchShopping, clear }) => {
   useEffect(() => {
     fetchShopping();
   }, []);
@@ -30,20 +30,43 @@ const ShoppingCounter = ({ shopping, fetchShopping }) => {
         }}
       >
         Counter <strong>{shopping}</strong>
+        <button
+          style={{
+            borderRadius: "10px",
+            border: "none",
+            color: "white",
+            background: "orange",
+            marginLeft: "1rem",
+            padding: "0.6rem 0.8rem",
+          }}
+          onClick={clear}
+          type="button"
+        >
+          Clear
+        </button>
       </h2>
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
+  const data = state.shopping.shopping;
+  const count =
+    data.length &&
+    data
+      .map((item) => item.quantity)
+      .reduce((item, current) => {
+        return item + current;
+      });
   return {
-    shopping: state.shopping.length,
+    shopping: count,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchShopping: bindActionCreators(fetchShopping, dispatch),
+    clear: bindActionCreators(clearShopping, dispatch),
   };
 };
 
