@@ -38,6 +38,8 @@ const ShoppingCounter = ({ shopping, fetchShopping, clear }) => {
             background: "orange",
             marginLeft: "1rem",
             padding: "0.6rem 0.8rem",
+            outline: "none",
+            cursor: "pointer",
           }}
           onClick={clear}
           type="button"
